@@ -1,0 +1,5 @@
+# JetBrains configuraion
+.idea
+
+# Dev environment variables
+.env

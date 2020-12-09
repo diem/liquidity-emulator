@@ -1,0 +1,26 @@
+[requires]
+python_version = "3.7"
+
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+flake8 = "*"
+black = "*"
+pre-commit = "*"
+pytest = "*"
+
+[packages]
+Flask = ">=1.1.1"
+SQLAlchemy = "*"
+Werkzeug = "*"
+psycopg2-binary = "*"
+bech32 = "*"
+dataclasses-json = "*"
+cryptography = "*"
+diem = "*"
+
+[pipenv]
+allow_prereleases = true
