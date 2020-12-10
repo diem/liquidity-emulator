@@ -34,8 +34,6 @@ from .storage import (
     settle_debt,
 )
 
-JSON_RPC_URL = os.environ["JSON_RPC_URL"]
-
 LP_IBAN_ADDRESS = "US89 3704 0044 0532 0130 00"
 
 logger = logging.getLogger(__name__)
@@ -191,7 +189,9 @@ class DDLiquidityProvider(LiquidityProvider):
             "LIQUIDITY_CUSTODY_ACCOUNT_NAME", "liquidity"
         )
         self.chain_id = int(os.environ["CHAIN_ID"])
-        self.vasp = Vasp(jsonrpc.Client(JSON_RPC_URL), liquidity_custody_account_name)
+        self.vasp = Vasp(
+            jsonrpc.Client(os.environ["JSON_RPC_URL"]), liquidity_custody_account_name
+        )
 
         super().__init__(self.vasp.address_str)
 
@@ -199,7 +199,7 @@ class DDLiquidityProvider(LiquidityProvider):
         if not diem_deposit_address:
             raise TradeError("Can't execute trade without a deposit address")
 
-        receiver_vasp, receiver_subaddress = identifier.decode_account(
+        receiver_vasp, receiver_sub_address = identifier.decode_account(
             diem_deposit_address, identifier.HRPS[self.chain_id]
         )
 
@@ -207,7 +207,7 @@ class DDLiquidityProvider(LiquidityProvider):
             currency=quote.currency_pair.value.base,
             amount=quote.amount,
             dest_vasp_address=utils.account_address_hex(receiver_vasp),
-            dest_sub_address=receiver_subaddress.hex(),
+            dest_sub_address=receiver_sub_address.hex(),
         )
 
         trade.executed(tx_version)
