@@ -13,7 +13,8 @@ This project used the following tools:
 ```shell script
 pipenv install --dev
 pipenv run pre-commit install
-cp ".env.example" ".env"
+pipenv run python setup_env.py
+./run.sh
 ```
 
 The last command will install the git hooks that will run code formatting
