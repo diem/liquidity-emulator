@@ -11,7 +11,7 @@ COPY Pipfile Pipfile.lock ./
 RUN pipenv install --deploy --system
 
 COPY account_watcher.py ./
-COPY liquidity ./
-COPY webapp ./
+COPY liquidity ./liquidity
+COPY webapp ./webapp
 
 CMD ./run.sh
