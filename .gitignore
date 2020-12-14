@@ -2,4 +2,4 @@
 .idea
 
 # Dev environment variables
-.env
+.env*
