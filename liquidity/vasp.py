@@ -41,7 +41,7 @@ class Vasp:
         print("===VASP account has been created successfully===")
 
         for currency in self._diem_client.get_currencies():
-            if currency.code == "Coin1":
+            if currency.code == "XUS":
                 print(f"Adding {currency.code} to account {self.address_str}")
                 self._add_currency_to_vasp_account(currency.code)
 
@@ -81,7 +81,7 @@ class Vasp:
 
     def create_vasp_account(self):
         faucet = testnet.Faucet(self._diem_client)
-        faucet.mint(self.account.auth_key.hex(), 1_000_000, "Coin1")
+        faucet.mint(self.account.auth_key.hex(), 1_000_000, "XUS")
 
     def fetch_account_info(self):
         return self._diem_client.get_account(self.account.account_address)

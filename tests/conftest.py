@@ -26,7 +26,7 @@ class LiquidityProviderMock:
     def find_quote(quote_id: QuoteId) -> Quote:
         return Quote(
             id=str(quote_id),
-            currency_pair=CurrencyPairs.Coin1_USD,
+            currency_pair=CurrencyPairs.XUS_USD,
             rate=1000000,
             amount=10000000,
             created_at=datetime.now(),
