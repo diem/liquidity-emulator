@@ -1,4 +1,4 @@
-# Liquidity Service Reference Implementation
+# Liquidity Service Emulator
 
 ## Development
 
