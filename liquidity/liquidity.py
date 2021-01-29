@@ -200,7 +200,7 @@ class DDLiquidityProvider(LiquidityProvider):
             raise TradeError("Can't execute trade without a deposit address")
 
         receiver_vasp, receiver_sub_address = identifier.decode_account(
-            diem_deposit_address, identifier.HRPS[self.chain_id]
+            diem_deposit_address, identifier.HRPS.get(self.chain_id, identifier.PDM)
         )
 
         tx_version, tx_sequence = self.vasp.send_transaction(
