@@ -8,7 +8,7 @@ This project used the following tools:
 - Black for automatic code formatting.
 - Flake8 for linting.
 
-### Setup
+### Testnet setup
 
 ```shell script
 pipenv install --dev
@@ -19,6 +19,16 @@ pipenv run python setup_env.py
 
 The last command will install the git hooks that will run code formatting
 and linting on each commit.
+
+### Premainnet setup
+
+Premainnet setup works identically to the testnet setup, but requires two
+environment variables to be present: `BLOCKCHAIN` and `LIQUIDITY_ACCOUNT_PRIVATE_KEY`.
+
+The value of `BLOCKCHAIN` must be `premainnet`; the value of
+`LIQUIDITY_ACCOUNT_PRIVATE_KEY` must be the private key of the Designated
+Dealer account, encoded as a hexadecimal string.
+
 
 ### PyCharm configuration
 - Add Black to `Settings/Tools/File Watchers` as described in the [documentation][1].

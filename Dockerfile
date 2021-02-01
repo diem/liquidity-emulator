@@ -10,7 +10,6 @@ COPY run.sh wait.sh ./
 COPY Pipfile Pipfile.lock ./
 RUN pipenv install --deploy --system
 
-COPY account_watcher.py ./
 COPY liquidity ./liquidity
 COPY webapp ./webapp
 
