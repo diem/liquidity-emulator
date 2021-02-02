@@ -233,6 +233,7 @@ class FaucetLiquidityProvider(LiquidityProvider):
         faucet.mint(
             account.authentication_key, quote.amount, quote.currency_pair.value.base
         )
+        trade.executed(-1)
 
 
 def liquidity_provider_default_factory() -> LiquidityProvider:
