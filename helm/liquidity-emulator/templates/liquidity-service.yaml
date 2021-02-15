@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "liquidity.fullname" . }}
+  labels:
+    {{- include "liquidity.labels" . | nindent 4 }}
+    app: {{ include "liquidity.fullname" . }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: {{ .Values.service.targetPort }}
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "liquidity.selectorLabels" . | nindent 4 }}
+    app: {{ include "liquidity.fullname" . }}

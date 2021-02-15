@@ -1,0 +1,58 @@
+# Liquidity DD account private key
+# Can be omitted if on testnet, to use the testnet faucet directly
+vaspPrivateKey:
+
+# Diem chain ID. Should be modified if deploying not for testnet
+diemChainId: 2
+# Diem JSON-RPC API URL. Should be modified if deploying not for testnet
+diemJsonRpc: "https://testnet.diem.com/v1"
+
+# Which docker image to use
+image: lrw_liquidity
+# Should the docker image be pulled or is it expected to be already
+# in the Kubernetes cluster's internal repository?
+pullPolicy: Never
+
+imagePullSecrets: []
+
+serviceAccount:
+  create: true
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+
+service:
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
+
+autoscaling:
+  enabled: false
+  replicaCount: 1
+
+database:
+  # Should a database service be created?
+  # If false, host:port should point to an existing DB instance
+  create: false
+
+  # The name of the docker image to use for the database deployment
+  # .Values.pullPolicy affects how the image is obtained
+  image: "lrw_db"
+
+  protocol: "postgresql"
+  username: "backenduser"
+  password: "backendpassword"
+  host:
+  port: 5432
+  dbName: "liquidity_provider_db"
+  persistence: {}
+
+nameOverride:
+fullnameOverride:
+
+custodyAccountName: liquidity1

@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "liquidity.fullname" . }}
+  labels:
+    app: {{ include "liquidity.fullname" . }}
+    {{- include "liquidity.labels" . | nindent 4 }}
+spec:
+{{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.autoscaling.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      app: {{ include "liquidity.fullname" . }}
+      {{- include "liquidity.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        app: {{ include "liquidity.fullname" . }}
+        {{- include "liquidity.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "liquidity.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+      - name: lrw-liquidity
+        image: "{{ .Values.image }}"
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        ports:
+        - name: http
+          containerPort: {{.Values.service.targetPort}}
+          protocol: TCP
+        env:
+        - name: COMPOSE_ENV
+          value: "production"
+        - name: LIQUIDITY_PORT
+          value: {{.Values.service.targetPort | quote}}
+        - name: LP_DB_URL
+          value: {{ include "liquidity.database.url" . }}
+        {{- if .Values.vaspPrivateKey }}
+        - name: LIQUIDITY_CUSTODY_ACCOUNT_NAME
+          value: {{ .Values.custodyAccountName | quote }}
+        - name: CUSTODY_PRIVATE_KEYS
+          value: {{ include "liquidity.custodyPrivateKeys" . }}
+        {{- end }}
+        - name: CHAIN_ID
+          value: {{ .Values.diemChainId | quote }}
+        - name: JSON_RPC_URL
+          value: {{ .Values.diemJsonRpc }}

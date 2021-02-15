@@ -1,0 +1,59 @@
+{{- if .Values.database.create -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "liquidity.fullname" . }}-db
+  labels:
+    app: {{ include "liquidity.fullname" . }}-db
+    {{- include "liquidity.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "liquidity.fullname" . }}-db
+      {{- include "liquidity.selectorLabels" . | nindent 6 }}
+  replicas: 1
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        app: {{ include "liquidity.fullname" . }}-db
+        {{- include "liquidity.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "liquidity.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+      - env:
+        - name: POSTGRES_USER
+          value: {{ .Values.database.username }}
+        - name: POSTGRES_PASSWORD
+          value: {{ .Values.database.password }}
+        {{- if .Values.database.persistence }}
+        - name: PGDATA
+          value: /data/pgdata
+        {{- end }}
+        image: "{{ $.Values.database.image }}"
+        imagePullPolicy: {{ .Values.pullPolicy }}
+        name: db
+        ports:
+        - containerPort: {{ .Values.database.port }}
+        {{- if .Values.database.persistence }}
+        volumeMounts:
+          - mountPath: /data
+            name: {{ include "liquidity.fullname" . }}-db-pv
+        {{- end }}
+      restartPolicy: Always
+      {{- if .Values.database.persistence }}
+      volumes:
+        - name: {{ include "liquidity.fullname" . }}-db-pv
+          persistentVolumeClaim:
+            claimName: {{ include "liquidity.fullname" . }}-db-pv-claim
+      {{- end }}
+{{- end }}

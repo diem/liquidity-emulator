@@ -1,0 +1,7 @@
+apiVersion: v2
+name: liquidity-emulator
+version: 1.0.0
+description: A Helm chart for Diem Liquidity Emulator
+type: application
+home: https://github.com/diem/liquidity-emulator
+icon: https://github.com/diem/diem/raw/master/developers.diem.com/static/img/diem-logo.png

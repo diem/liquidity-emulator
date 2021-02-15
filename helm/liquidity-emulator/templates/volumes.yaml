@@ -1,0 +1,30 @@
+{{- if .Values.database.persistence -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "liquidity.fullname" . }}-db-pv-claim
+  labels:
+    app: {{ include "liquidity.fullname" . }}-db
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.database.persistence.claimSize }}
+---
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: {{ include "liquidity.fullname" . }}-db-pv
+  labels:
+    type: local
+    app: {{ include "liquidity.fullname" . }}-db
+spec:
+  storageClassName: manual
+  capacity:
+    storage: {{ .Values.database.persistence.pvSize }}
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"
+{{- end }}

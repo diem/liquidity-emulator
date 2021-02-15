@@ -1,0 +1,4 @@
+The liquidity provider service is now accessible inside your Kubernetes cluster.
+
+  Liquidity provider host: {{ include "liquidity.fullname" . }}
+  Liquidity provider port: {{ .Values.service.targetPort }}
