@@ -78,5 +78,5 @@ Returns proper value for the LP's CUSTODY_PRIVATE_KEYS environment variable
 */}}
 {{- define "liquidity.custodyPrivateKeys" }}
 {{-     $privateKey := required "Wallet VASP account private key must be set in .Values.vaspPrivateKey" .Values.vaspPrivateKey }}
-{{-     dict .Values.custodyWalletAccountName $privateKey | toJson | quote }}
+{{-     dict .Values.custodyAccountName $privateKey | toJson | quote }}
 {{- end }}
